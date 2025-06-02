@@ -41,10 +41,10 @@ Você pode ajustar os pesos `w1`, `w2` e `w3` para testar diferentes comportamen
 ---
 
 ## 🏁 Exemplo de saída
-
+```
 Melhor caminho até o gol (score final: 27.82):
 Jogador 1 → Jogador 3 → Jogador 4 → Gol
-
+```
 ---
 
 ## 📂 Estrutura do projeto
@@ -59,6 +59,7 @@ Jogador 1 → Jogador 3 → Jogador 4 → Gol
 ```bash
 gcc main.c -o futebol -lm
 ./futebol
+```
 O uso de -lm é necessário para incluir a biblioteca matemática.
 
 ✅ Requisitos atendidos
