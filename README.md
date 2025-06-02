@@ -78,7 +78,7 @@ Apresentação do melhor caminho com base em heurísticas
 Todos os itens foram contemplados e testados.
 
 ✍️ Autor
-Projeto desenvolvido por Lucas Borille isciplina de Estrutura de Dados Aplicadas – 2025.
+Projeto desenvolvido por Lucas Borille disciplina de Estrutura de Dados Aplicadas – 2025.
 
 📄 Licença
 Este projeto está sob a licença MIT. Sinta-se à vontade para estudar, modificar e utilizar.
