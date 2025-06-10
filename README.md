@@ -1,32 +1,29 @@
 # 🔁 Projeto de Grafos: Melhor Passe em uma Partida de Futebol
 
-Este projeto simula a tomada de decisão de um jogador de futebol utilizando **grafos ponderados e algoritmo de busca em profundidade (DFS)**. A ideia é calcular o melhor caminho até o gol a partir da posição de um jogador com a posse da bola, considerando fatores táticos realistas como:
+Este projeto simula a tomada de decisão de um jogador de futebol utilizando **grafos ponderados** e o algoritmo de **busca em profundidade (DFS)**. Ele calcula a melhor rota até o gol com base em passes táticos, levando em conta a posição dos adversários e o alinhamento dos jogadores com o gol.
 
-- Distância entre os jogadores
-- Marcação dos adversários
-- Direção do passe em relação ao gol
-- Finalizações de curta distância (com bônus)
+---
+
+## 🎮 Funcionalidades
+
+- Renderização gráfica do campo e dos jogadores com **SDL2**
+- Animação da bola seguindo o melhor caminho encontrado
+- Três jogadas pré-definidas que podem ser alternadas com as teclas `1`, `2` e `3`
+- A bola **sempre começa com o jogador mais à esquerda**
+- Pressione `Espaço` para simular a jogada
+- Pressione `R` para resetar a jogada
+- O **gol está centralizado visualmente** na área
+- Log da melhor sequência de passes exibido no terminal
 
 ---
 
 ## 🎯 Objetivo
 
-Aplicar a teoria de grafos em um contexto prático e realista, utilizando:
+Aplicar a teoria de grafos em um contexto prático e visual, utilizando:
 
 - **Matriz de adjacência ponderada**
-- **Busca em profundidade (DFS) com profundidade máxima**
+- **Busca em profundidade (DFS)** com profundidade máxima
 - Heurísticas baseadas em futebol para calcular o **score** de cada passe
-
----
-
-## 🧠 Como funciona
-
-1. Cada jogador é um **nó** do grafo.
-2. Cada passe possível é uma **aresta dirigida e ponderada**.
-3. O algoritmo de **DFS** explora todas as sequências de passes (limitadas a no máximo 3 passes).
-4. A cada jogada, calcula-se o **score médio da sequência**, aplicando:
-   - Bônus por chute próximo do gol
-   - Penalidade implícita ao dividir o total pelo número de jogadas
 
 ---
 
@@ -34,51 +31,121 @@ Aplicar a teoria de grafos em um contexto prático e realista, utilizando:
 
 Cada passe é avaliado com base na fórmula:
 
+```
 score = w1 * (1 / distância * 5) + w2 * distância_do_marcador + w3 * (1 + cosseno_do_ângulo_com_o_gol)
+```
 
-Você pode ajustar os pesos `w1`, `w2` e `w3` para testar diferentes comportamentos táticos.
+Você pode ajustar os pesos `w1`, `w2`, `w3` no código para testar diferentes estratégias táticas.
 
 ---
 
-## 🏁 Exemplo de saída
-```
-Melhor caminho até o gol (score final: 27.82):
-Jogador 1 → Jogador 3 → Jogador 4 → Gol
-```
----
+## 🧠 Como funciona
 
-## 📂 Estrutura do projeto
-
-- `main.c` – Código-fonte principal com estrutura de grafo, cálculo de scores e DFS
-- `README.md` – Este arquivo com instruções e explicações
+1. Cada jogador do time é um **nó** no grafo.
+2. Cada passe possível entre jogadores é uma **aresta ponderada**.
+3. O algoritmo de **DFS** explora as combinações de até 3 passes.
+4. A cada jogada:
+   - O score acumulado é dividido pelo número de passes
+   - Bônus extra é aplicado se o último passe for para uma finalização próxima ao gol
 
 ---
 
 ## 🧪 Como compilar e executar
 
+### ✅ Pré-requisitos
+
+Instale as bibliotecas SDL2 e SDL2_image:
+
+**macOS (Homebrew):**
+
 ```bash
-gcc main.c -o futebol -lm
+brew install sdl2 sdl2_image
+```
+
+**Ubuntu/Debian:**
+
+```bash
+sudo apt-get install libsdl2-dev libsdl2-image-dev
+```
+
+---
+
+### 🔧 Compilação
+
+**macOS:**
+
+```bash
+gcc main.c -o futebol \
+  -I/opt/homebrew/include/SDL2 \
+  -L/opt/homebrew/lib \
+  -lSDL2 -lSDL2_image -lm
+```
+
+**Linux (Ubuntu):**
+
+```bash
+gcc main.c -o futebol -lSDL2 -lSDL2_image -lm
+```
+
+---
+
+### ▶️ Execução
+
+```bash
 ./futebol
 ```
-O uso de -lm é necessário para incluir a biblioteca matemática.
 
-✅ Requisitos atendidos
-Este projeto foi desenvolvido com base em uma proposta acadêmica que exigia:
+---
 
-Modelagem de um problema real com grafos
+## 🏁 Exemplo de saída
 
-Implementação em linguagem C
+No terminal, ao pressionar `Espaço` para iniciar a jogada, será exibido:
 
-Uso de matriz de adjacência
+```
+Melhor caminho até o gol (score final: 27.82):
+Jogador 0 → Jogador 2 → Jogador 4 (Gol)
+```
 
-Algoritmo de busca (DFS)
+---
 
-Apresentação do melhor caminho com base em heurísticas
+## 📁 Estrutura esperada
 
-Todos os itens foram contemplados e testados.
+```
+.
+├── main.c
+├── timeA.png
+├── timeB.png
+├── bola.png
+└── README.md
+```
 
-✍️ Autor
-Projeto desenvolvido por Lucas Borille disciplina de Estrutura de Dados Aplicadas – 2025.
+---
 
-📄 Licença
-Este projeto está sob a licença MIT. Sinta-se à vontade para estudar, modificar e utilizar.
+## ✅ Requisitos Acadêmicos Atendidos
+
+- [x] Modelagem de problema real com grafos
+- [x] Implementação em linguagem C
+- [x] Uso de matriz de adjacência
+- [x] Algoritmo de busca (DFS)
+- [x] Apresentação visual com SDL
+- [x] Animação interativa e controle por teclado
+- [x] Impressão da melhor jogada no terminal
+
+---
+
+## ✍️ Autores
+
+Projeto desenvolvido por:
+
+- Lucas Borille  
+- Talysson Decol  
+- Thiago Medici  
+- Gabriel Riccetto  
+
+📚 *Disciplina: Estrutura de Dados Aplicadas – 2025*
+
+---
+
+## 📄 Licença
+
+Distribuído sob a licença MIT. Sinta-se à vontade para estudar, modificar e utilizar este projeto em seus próprios experimentos.
