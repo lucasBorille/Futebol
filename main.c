@@ -15,7 +15,7 @@ typedef struct {
     float y;
 } Jogador;
 
-Jogador gol = {15.0, 6.0};
+Jogador gol = {15.0, 5.5};
 
 SDL_Texture* sprite_timeA = NULL;
 SDL_Texture* sprite_timeB = NULL;
@@ -123,15 +123,22 @@ void desenhar_campo(SDL_Renderer* renderer) {
 void carregar_jogada(int jogada, Jogador time1[], Jogador time2[]) {
     if (jogada == 1) {
         time1[0] = (Jogador){2, 2}; time1[1] = (Jogador){4,5}; time1[2] = (Jogador){6,2}; time1[3] = (Jogador){8,5}; time1[4] = gol;
-        time2[0] = (Jogador){1,3}; time2[1] = (Jogador){5,4}; time2[2] = (Jogador){7,2}; time2[3] = (Jogador){15,4}; time2[4] = (Jogador){13,4};
+        time2[0] = (Jogador){1,3}; time2[1] = (Jogador){5,4}; time2[2] = (Jogador){7,2}; time2[3] = (Jogador){10,4}; time2[4] = (Jogador){13,6};
     } else if (jogada == 2) {
-        time1[0] = (Jogador){3, 5}; time1[1] = (Jogador){4.5,2}; time1[2] = (Jogador){6,4.5}; time1[3] = (Jogador){8,2.5}; time1[4] = gol;
-        time2[0] = (Jogador){4,3}; time2[1] = (Jogador){5.5,4.5}; time2[2] = (Jogador){7,3}; time2[3] = (Jogador){9.5,4}; time2[4] = (Jogador){13.5,4};
+        time1[0] = (Jogador){3, 5}; time1[1] = (Jogador){5,2}; time1[2] = (Jogador){6,4.5}; time1[3] = (Jogador){8,2.5}; time1[4] = gol;
+        time2[0] = (Jogador){3.5,3}; time2[1] = (Jogador){5,4.5}; time2[2] = (Jogador){7,3.5}; time2[3] = (Jogador){9.5,4}; time2[4] = (Jogador){13.5,6};
     } else if (jogada == 3) {
         time1[0] = (Jogador){2.5, 4}; time1[1] = (Jogador){5,2}; time1[2] = (Jogador){6.5,5}; time1[3] = (Jogador){8.5,3}; time1[4] = gol;
-        time2[0] = (Jogador){4,2.5}; time2[1] = (Jogador){6,3}; time2[2] = (Jogador){7.5,2}; time2[3] = (Jogador){10,4}; time2[4] = (Jogador){13.8,4};
+        time2[0] = (Jogador){4,2.5}; time2[1] = (Jogador){6,3}; time2[2] = (Jogador){7.5,2}; time2[3] = (Jogador){10,4}; time2[4] = (Jogador){13.8,6};
+    }else if (jogada == 4){
+        time1[0] = (Jogador){15, 0}; time1[1] = (Jogador){11,3}; time1[2] = (Jogador){13,7}; time1[3] = (Jogador){13,5}; time1[4] = gol;
+        time2[0] = (Jogador){14,3.5}; time2[1] = (Jogador){12.3,5.5}; time2[2] = (Jogador){13,6.5}; time2[3] = (Jogador){10,4}; time2[4] = (Jogador){14.6,5.5};
+    }else if (jogada == 5){
+        time1[0] = (Jogador){10,6.5}; time1[1] = (Jogador){11,3}; time1[2] = (Jogador){10.3,7}; time1[3] = (Jogador){13,5}; time1[4] = gol;
+        time2[0] = (Jogador){12.4,7}; time2[1] = (Jogador){12.4,6}; time2[2] = (Jogador){12.4,6.5}; time2[3] = (Jogador){10,4}; time2[4] = (Jogador){14.6,5.5};
     }
 }
+
 
 int main() {
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
@@ -161,8 +168,9 @@ int main() {
             jogador_inicial = i;
         }
     }
+    jogador_inicial = 0;
 
-    float w1 = 1.0, w2 = 2.0, w3 = 1.0;
+    float w1 = 2.0, w2 = 2.0, w3 = 1.0;
     float scores[N_JOGADORES][N_JOGADORES];
 
     int visitados[N_JOGADORES] = {0};
@@ -197,20 +205,11 @@ int main() {
                     jogada_iniciada = 0;
                     passo = 0;
                     t = 0;
-                } else if (e.key.keysym.sym == SDLK_1 || e.key.keysym.sym == SDLK_2 || e.key.keysym.sym == SDLK_3) {
+                } else if (e.key.keysym.sym == SDLK_1 || e.key.keysym.sym == SDLK_2 || e.key.keysym.sym == SDLK_3|| e.key.keysym.sym == SDLK_4|| e.key.keysym.sym == SDLK_5 ) {
                     jogada_atual = e.key.keysym.sym - SDLK_0;
                     carregar_jogada(jogada_atual, time1, time2);
 
-                    menor_x = time1[0].x;
                     jogador_inicial = 0;
-                    for (int i = 1; i < N_JOGADORES - 1; i++) {
-                        if (time1[i].x < menor_x) {
-                            menor_x = time1[i].x;
-                            jogador_inicial = i;
-                        }
-                    }
-
-                    jogada_iniciada = 0;
                     passo = 0;
                     t = 0;
                 }
