@@ -11,7 +11,7 @@ typedef struct {
     float y;
 } Jogador;
 
-Jogador gol = {12, 3}; // posição do gol
+Jogador gol = {15, 5.5}; // posição do gol
 
 float distancia(Jogador a, Jogador b) {
     return sqrtf((a.x - b.x)*(a.x - b.x) + (a.y - b.y)*(a.y - b.y));
@@ -46,7 +46,9 @@ float calcular_score(Jogador a, Jogador b, Jogador time2[], int n_adv, float w1,
 
     float d_marcador = distanciaMarcador(b, time2, n_adv);
     float c = cosseno_angulo(a, b, gol);
-    return w1 * (1.0f / d * 5) + w2 * d_marcador + w3 * (1 + c);
+
+        
+    return w1 * (1.0f / d * 5) + w2 * d_marcador + w3 * (1 + c); // Adiciona 1 ao cosseno para não ter valores negativos
 }
 
 // ------------------------ DFS ---------------------------
@@ -90,30 +92,54 @@ void dfs(float scores[N_JOGADORES][N_JOGADORES], Jogador time1[], int atual, int
 
 // --------------------------------------------------------
 
+void carregar_jogada(int jogada, Jogador time1[], Jogador time2[]) {
+    if (jogada == 1) {
+        time1[0] = (Jogador){2, 2}; time1[1] = (Jogador){4,5}; time1[2] = (Jogador){6,2}; time1[3] = (Jogador){8,5}; time1[4] = gol;
+        time2[0] = (Jogador){1,3}; time2[1] = (Jogador){5,4}; time2[2] = (Jogador){7,2}; time2[3] = (Jogador){10,4}; time2[4] = (Jogador){13,6};
+    } else if (jogada == 2) {
+        time1[0] = (Jogador){3, 5}; time1[1] = (Jogador){5,2}; time1[2] = (Jogador){6,4.5}; time1[3] = (Jogador){8,2.5}; time1[4] = gol;
+        time2[0] = (Jogador){3.5,3}; time2[1] = (Jogador){5,4.5}; time2[2] = (Jogador){7,3.5}; time2[3] = (Jogador){9.5,4}; time2[4] = (Jogador){13.5,6};
+    } else if (jogada == 3) {
+        time1[0] = (Jogador){2.5, 4}; time1[1] = (Jogador){5,2}; time1[2] = (Jogador){6.5,5}; time1[3] = (Jogador){8.5,3}; time1[4] = gol;
+        time2[0] = (Jogador){4,2.5}; time2[1] = (Jogador){6,3}; time2[2] = (Jogador){7.5,2}; time2[3] = (Jogador){10,4}; time2[4] = (Jogador){13.8,6};
+    }else if (jogada == 4){
+        time1[0] = (Jogador){15, 0}; time1[1] = (Jogador){11,3}; time1[2] = (Jogador){13,7}; time1[3] = (Jogador){13,5}; time1[4] = gol;
+        time2[0] = (Jogador){14,3.5}; time2[1] = (Jogador){12.3,5.5}; time2[2] = (Jogador){13,6.5}; time2[3] = (Jogador){10,4}; time2[4] = (Jogador){14.6,5.5};
+    }else if (jogada == 5){
+        time1[0] = (Jogador){10,6.5}; time1[1] = (Jogador){11,3}; time1[2] = (Jogador){10.3,7}; time1[3] = (Jogador){13,5}; time1[4] = gol;
+        time2[0] = (Jogador){12.4,7}; time2[1] = (Jogador){12.4,6}; time2[2] = (Jogador){12.4,6.5}; time2[3] = (Jogador){10,4}; time2[4] = (Jogador){14.6,5.5};
+    }
+}
+
 int main() {
-    Jogador time1[N_JOGADORES] = {
-        {2, 2}, {3.5,4}, {5,0}, {10,4}, {12,3}
-    };
+    Jogador time1[N_JOGADORES];
 
-    Jogador time2[N_JOGADORES] = {
-        {4,4}, {5,1}, {8,5}, {3,2}, {11.5,3}
-    };
+    Jogador time2[N_JOGADORES];
 
-    float w1 = 1.0, w2 = 2.0, w3 = 1.0;
+    printf("Digite o numero da jogada desejada:");
+    int jogada;
+    scanf("%d", &jogada);
 
+    carregar_jogada(jogada, time1, time2);
+
+    float w1 = 2.0, w2 = 2.0, w3 = 1.0;
+
+    // Criação do Grafo de Matriz de adjacencia
     float scores[N_JOGADORES][N_JOGADORES];
     for (int i = 0; i < N_JOGADORES; i++) { 
         for (int j = 0; j < N_JOGADORES; j++) {
             if (i != j)
+            //Preenche o peso da aresta com a função calcular_score
                 scores[i][j] = calcular_score(time1[i], time1[j], time2,N_JOGADORES, w1, w2, w3);
             else
+            // O jogador não pode passar para si mesmo, então colocamos -1
                 scores[i][j] = -1;
         }
     }
 
 
 
-    int jogador_inicial = 2; // Jogador 1
+    int jogador_inicial = 0; // Jogador 1
     int visitados[N_JOGADORES] = {0};
 
     dfs(scores, time1, jogador_inicial, 0, 0, visitados);
